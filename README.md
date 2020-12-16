@@ -30,7 +30,7 @@ Any LTS version. It is **not** recommended to use Node.js 12.17.x,12.18.x or 12.
 * `npx lerna bootstrap`
 
 Please try and keep commits related to a single package or piece of functionality. Please review the
-(CONTRIBUTING.md)[CONTRIBITING.md] for additional details.
+(CONTRIBUTING.md)[CONTRIBITING.md] for additional details. This is a test
 
 ## Supporting development
 
