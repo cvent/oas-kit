@@ -55,7 +55,7 @@ paths:
       deprecated: false
 components:
   schemas:
-    abc:
+    schemas-abc:
       title: abc
       description: this is abc
       type: object
@@ -64,7 +64,7 @@ components:
           description: the local identifier (not necessarily globally unique)
           type: string
         details:
-          $ref: '#/components/schemas/abc'
+          $ref: '#/components/schemas/schemas-abc'
           description: a list of details
           type: array
     paging:
@@ -103,13 +103,13 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/abc'
+            $ref: '#/components/schemas/schemas-abc'
     Post203:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/abc'
+            $ref: '#/components/schemas/schemas-abc'
     TestModel:
         description: A test model
         content:

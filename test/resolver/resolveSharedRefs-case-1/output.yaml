@@ -55,7 +55,7 @@ paths:
       deprecated: false
 components:
   schemas:
-    xyz:
+    schemas-xyz:
       title: XYZ
       description: this is xyz
       type: object
@@ -63,7 +63,7 @@ components:
         id:
           description: the local identifier (not necessarily globally unique)
           type: string
-    abc:
+    schemas-abc:
       title: abc
       description: this is abc
       type: object
@@ -71,7 +71,7 @@ components:
         id:
           description: the local identifier (not necessarily globally unique)
           type: string
-    xyz-123:
+    schemas2-xyz:
       title: XYZ
       description: this is xyz
       type: object
@@ -79,7 +79,7 @@ components:
         id:
           description: the local identifier (not necessarily globally unique)
           type: string
-    abc-123:
+    schemas2-abc:
       title: abc
       description: this is abc
       type: object
@@ -111,49 +111,49 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/xyz'
+            $ref: '#/components/schemas/schemas-xyz'
     Post202:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/xyz'
+            $ref: '#/components/schemas/schemas-xyz'
     Post203:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/xyz-123'
+            $ref: '#/components/schemas/schemas2-xyz'
     Post204:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/xyz-123'
+            $ref: '#/components/schemas/schemas2-xyz'
     Post205:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/abc'
+            $ref: '#/components/schemas/schemas-abc'
     Post206:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/abc'
+            $ref: '#/components/schemas/schemas-abc'
     Post207:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/abc-123'
+            $ref: '#/components/schemas/schemas2-abc'
     Post208:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/abc-123'
+            $ref: '#/components/schemas/schemas2-abc'
     TestModel:
         description: A test model
         content:

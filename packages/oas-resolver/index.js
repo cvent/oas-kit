@@ -180,10 +180,19 @@ function resolveToName(ref, refs) {
         }
     }
 
-    let potentialSchemaName = `#/components/schemas/${path.parse(path.basename(ref)).name}`;
+    let refParts = ref.split('#');
+
+    let baseRefPath = path.parse(path.basename(refParts[0])).name
+
+    let deepRefPath = refParts.length > 1 ? path.parse(path.basename(refParts[1])).name : null;
+
+    let finalPath = deepRefPath ? `${baseRefPath}-${deepRefPath}` : baseRefPath;
+
+    let potentialSchemaName = `#/components/schemas/${finalPath}`;
+    
     if (currentListOfResolved.includes(potentialSchemaName)) {
         let hash = crypto.createHash('sha1').update(ref).digest('hex');
-        return `#/components/schemas/${path.parse(path.basename(ref)).name}-${hash}`
+        return `#/components/schemas/${finalPath}-${hash}`
     }
     return potentialSchemaName
 }

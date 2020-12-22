@@ -55,7 +55,7 @@ paths:
       deprecated: false
 components:
   schemas:
-    xyz:
+    schemas-xyz:
       title: XYZ
       description: this is xyz
       type: object
@@ -63,7 +63,7 @@ components:
         id:
           description: the local identifier (not necessarily globally unique)
           type: string
-    abc:
+    schemas-abc:
       title: abc
       description: this is abc
       type: object
@@ -95,25 +95,25 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/xyz'
+            $ref: '#/components/schemas/schemas-xyz'
     Post202:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/xyz'
+            $ref: '#/components/schemas/schemas-xyz'
     Post203:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/abc'
+            $ref: '#/components/schemas/schemas-abc'
     Post204:
       description: Success post
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/abc'
+            $ref: '#/components/schemas/schemas-abc'
     TestModel:
         description: A test model
         content:
