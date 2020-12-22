@@ -186,7 +186,7 @@ function resolveToName(ref, refs) {
     let currentCount = 0;
 
     // keep trying until we find a free index
-    while(currentListOfResolved.includes(potentialSchemaName)) {
+    while (currentListOfResolved.includes(potentialSchemaName)) {
       potentialSchemaName = `#/components/schemas/${schemaName}-${currentCount++}`;
     }
 
