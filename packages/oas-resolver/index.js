@@ -189,7 +189,7 @@ function resolveToName(ref, refs) {
     let finalPath = deepRefPath ? `${baseRefPath}-${deepRefPath}` : baseRefPath;
 
     let potentialSchemaName = `#/components/schemas/${finalPath}`;
-    
+
     if (currentListOfResolved.includes(potentialSchemaName)) {
         let hash = crypto.createHash('sha1').update(ref).digest('hex');
         return `#/components/schemas/${finalPath}-${hash}`
