@@ -1,6 +1,6 @@
 {
   "name": "@cvent/oas-resolver",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "description": "Resolve external $refs in OpenAPI (swagger) 2.0 / 3.x definitions",
   "main": "index.js",
   "bin": {

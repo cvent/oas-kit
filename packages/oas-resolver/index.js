@@ -340,7 +340,7 @@ function determineHoistedPtr(ptr, ref, openapi) {
 
     const possibleSections = ptrParts
         .map(part => HOISTABLE_COMPONENT_SECTION_LOOKUP[part])
-        .filter(part => part !== null);
+        .filter(part => !!part);
 
     const possibleSection = possibleSections.length > 0 ?
         possibleSections[0] :
