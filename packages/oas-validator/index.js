@@ -8,15 +8,15 @@ const yaml = require('yaml');
 const should = require('should/as-function');
 const maybe = require('call-me-maybe');
 
-const common = require('oas-kit-common');
-const jptr = require('reftools/lib/jptr.js');
+const common = require('@cvent/oas-kit-common');
+const jptr = require('@cvent/reftools/lib/jptr.js');
 const resolveInternal = jptr.jptr;
-const clone = require('reftools/lib/clone.js').clone;
-const recurse = require('reftools/lib/recurse.js').recurse;
-const isRef = require('reftools/lib/isref.js').isRef;
-const sw = require('oas-schema-walker');
-const linter = require('oas-linter');
-const resolver = require('oas-resolver');
+const clone = require('@cvent/reftools/lib/clone.js').clone;
+const recurse = require('@cvent/reftools/lib/recurse.js').recurse;
+const isRef = require('@cvent/reftools/lib/isref.js').isRef;
+const sw = require('@cvent/oas-schema-walker');
+const linter = require('@cvent/oas-linter');
+const resolver = require('@cvent/oas-resolver');
 
 const dummySchema = { anyOf: {} };
 const emptySchema = {};

@@ -7,12 +7,12 @@ const url = require('url');
 const fetch = require('node-fetch-h2');
 const yaml = require('yaml');
 
-const jptr = require('reftools/lib/jptr.js').jptr;
-const recurse = require('reftools/lib/recurse.js').recurse;
-const clone = require('reftools/lib/clone.js').clone;
-const deRef = require('reftools/lib/dereference.js').dereference;
-const isRef = require('reftools/lib/isref.js').isRef;
-const common = require('oas-kit-common');
+const jptr = require('@cvent/reftools/lib/jptr.js').jptr;
+const recurse = require('@cvent/reftools/lib/recurse.js').recurse;
+const clone = require('@cvent/reftools/lib/clone.js').clone;
+const deRef = require('@cvent/reftools/lib/dereference.js').dereference;
+const isRef = require('@cvent/reftools/lib/isref.js').isRef;
+const common = require('@cvent/oas-kit-common');
 
 const HOISTABLE_COMPONENT_SECTIONS = {
     'schemas': [ 'properties', 'items', 'schema', 'schemas' ]

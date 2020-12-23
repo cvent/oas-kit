@@ -9,15 +9,15 @@ const maybe = require('call-me-maybe');
 const fetch = require('node-fetch-h2');
 const yaml = require('yaml');
 
-const jptr = require('reftools/lib/jptr.js');
+const jptr = require('@cvent/reftools/lib/jptr.js');
 const resolveInternal = jptr.jptr;
-const isRef = require('reftools/lib/isref.js').isRef;
-const clone = require('reftools/lib/clone.js').clone;
-const cclone = require('reftools/lib/clone.js').circularClone;
-const recurse = require('reftools/lib/recurse.js').recurse;
-const resolver = require('oas-resolver');
-const sw = require('oas-schema-walker');
-const common = require('oas-kit-common');
+const isRef = require('@cvent/reftools/lib/isref.js').isRef;
+const clone = require('@cvent/reftools/lib/clone.js').clone;
+const cclone = require('@cvent/reftools/lib/clone.js').circularClone;
+const recurse = require('@cvent/reftools/lib/recurse.js').recurse;
+const resolver = require('@cvent/oas-resolver');
+const sw = require('@cvent/oas-schema-walker');
+const common = require('@cvent/oas-kit-common');
 
 const statusCodes = require('./lib/statusCodes.js').statusCodes;
 
