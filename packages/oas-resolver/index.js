@@ -14,6 +14,22 @@ const deRef = require('reftools/lib/dereference.js').dereference;
 const isRef = require('reftools/lib/isref.js').isRef;
 const common = require('oas-kit-common');
 
+const HOISTABLE_COMPONENT_SECTIONS = {
+    'schemas': [ 'properties', 'items', 'schema', 'schemas' ]
+}
+
+const HOISTABLE_COMPONENT_SECTION_LOOKUP = Object.entries(HOISTABLE_COMPONENT_SECTIONS).reduce(
+    (result, entry) => {
+        const [ section, keys ] = entry;
+
+        keys.forEach(key => {
+            result[key] = section;
+        });
+
+        return result;
+    }, {}
+)
+
 function unique(arr) {
     return [... new Set(arr)];
 }
@@ -296,6 +312,50 @@ function resolveExternal(root, pointer, options, callback) {
     }
 }
 
+function buildComponentName(section, ref, openapi, idx = -1) {
+    const name = `#/components/${section}/${path.basename(ref)}` + (idx >= 0 ? `-${idx}` : '');
+
+    idx = idx + 1;
+
+    const existingJptr = jptr(openapi, name);
+
+    return existingJptr ? buildComponentName(section, ref, openapi, idx) : name;
+}
+
+function determineHoistedPtr(ptr, ref, openapi) {
+
+    // check to see if this is a direct ref to a component; if so don't worry about hoisting
+    // it up since its already hoisted
+    if (ptr.startsWith("#/components") && ptr.split("/").length === 4) {
+        return ptr;
+    }
+
+    // determine what type of component we have by looking at where it was pointed to.
+    // this is a naive approach; but is probably the best we can do.
+
+    // limit the number of things we look at; wan't to avoid accidentally assigning the
+    // component to the wrong section. (ie; if we have #/components/schemas/Thing/examples/my-example)
+    // we DON'T want to accidentally assign the result to a schema instead of an example
+    const ptrParts = ptr.split('/').reverse().slice(0, 3);
+
+    const possibleSections = ptrParts
+        .map(part => HOISTABLE_COMPONENT_SECTION_LOOKUP[part])
+        .filter(part => part !== null);
+
+    const possibleSection = possibleSections.length > 0 ?
+        possibleSections[0] :
+        null;
+
+
+    // if we don't know what section it belongs to fall back to
+    if (!possibleSection) {
+        return ptr;
+    }
+
+    // did we find a possible match? If so, use the first one
+    return buildComponentName(possibleSection, ref, openapi);
+}
+
 function scanExternalRefs(options) {
     return new Promise(function (res, rej) {
 
@@ -401,22 +461,37 @@ function findExternalRefs(options) {
                                 return 0;
                             });
 
+
+                            // a pointer is something that is USING an external ref;
+                            // a ref is the actual thing
                             for (let ptr of pointers) {
                                 // shared x-ms-examples $refs confuse the fixupRefs heuristic in index.js
+                                // if we've already resolved a given reference, then update it to point at the spot we resolved it to.
                                 if (refs[ref].resolvedAt && (ptr !== refs[ref].resolvedAt) && (ptr.indexOf('x-ms-examples/')<0)) {
                                     if (options.verbose>1) console.warn('Creating pointer to data at', ptr);
                                     jptr(options.openapi, ptr, { $ref: refs[ref].resolvedAt+refs[ref].extras[ptr], 'x-miro': ref+refs[ref].extras[ptr] }); // resolutionCase:E (new object)
                                 }
+                                // if we haven't resolved the ref; let's try to resolve it
                                 else {
+                                    const finalPtr = options.hoistResolvedComponents ? determineHoistedPtr(ptr, ref, options.openapi) : ptr;
+
                                     if (refs[ref].resolvedAt) {
+                                        // if the previous if failed (due to the x-ms-examples thing); then lets avoid reffing to ourselves
                                         if (options.verbose>1) console.warn('Avoiding circular reference');
                                     }
                                     else {
-                                        refs[ref].resolvedAt = ptr;
+                                        // then assign the resolvedAt location to the current pointer
+                                        refs[ref].resolvedAt = finalPtr;
                                         if (options.verbose>1) console.warn('Creating initial clone of data at', ptr);
                                     }
+                                    // then spread the data out at the location of the pointer
                                     let cdata = clone(data);
-                                    jptr(options.openapi, ptr, cdata); // resolutionCase:F (cloned:yes)
+                                    jptr(options.openapi, finalPtr, cdata); // resolutionCase:F (cloned:yes)
+
+                                    // if we re-routed the destination of the data, update the ptr to point there
+                                    if (finalPtr !== ptr) {
+                                        jptr(options.openapi, ptr, { '$ref': finalPtr });
+                                    }
                                 }
                             }
                             if (options.resolver.actions[localOptions.resolver.depth].length === 0) {
