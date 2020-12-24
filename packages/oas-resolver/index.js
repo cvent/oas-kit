@@ -15,7 +15,12 @@ const isRef = require('reftools/lib/isref.js').isRef;
 const common = require('oas-kit-common');
 
 const HOISTABLE_COMPONENT_SECTIONS = {
-    'schemas': [ 'properties', 'items', 'schema', 'schemas' ]
+    'schemas': [ 'properties', 'items', 'schema', 'schemas' ],
+    'examples': [ 'examples' ]
+}
+
+const COMPONENT_SECTION_HANDLER = {
+  'examples': data => { 'value': data }
 }
 
 const HOISTABLE_COMPONENT_SECTION_LOOKUP = Object.entries(HOISTABLE_COMPONENT_SECTIONS).reduce(
@@ -322,6 +327,22 @@ function buildComponentName(section, ref, openapi, idx = -1) {
     return existingJptr ? buildComponentName(section, ref, openapi, idx) : name;
 }
 
+function determineHoistedData(ptr, data) {
+  const ptrParts = ptr.split('/');
+
+  // we only want to work on things we've rerouted; and we always re-route to a top level component
+  if (ptrParts.length !== 4) {
+    return data;
+  }
+
+  // parts will be [#, components, section, name]; where we want the section
+  const componentType = ptrParts[2];
+
+  const handler = COMPONENT_SECTION_HANDLER[componentType];
+
+  return handler ? handler(data) : data;
+}
+
 function determineHoistedPtr(ptr, ref, openapi) {
 
     // check to see if this is a direct ref to a component; if so don't worry about hoisting
@@ -340,7 +361,7 @@ function determineHoistedPtr(ptr, ref, openapi) {
 
     const possibleSections = ptrParts
         .map(part => HOISTABLE_COMPONENT_SECTION_LOOKUP[part])
-        .filter(part => part !== null);
+        .filter(part => !!part);
 
     const possibleSection = possibleSections.length > 0 ?
         possibleSections[0] :
@@ -473,7 +494,9 @@ function findExternalRefs(options) {
                                 }
                                 // if we haven't resolved the ref; let's try to resolve it
                                 else {
-                                    const finalPtr = options.hoistResolvedComponents ? determineHoistedPtr(ptr, ref, options.openapi) : ptr;
+                                    const finalPtr = options.hoistResolvedComponents ?
+                                      determineHoistedPtr(ptr, ref, options.openapi) :
+                                      ptr;
 
                                     if (refs[ref].resolvedAt) {
                                         // if the previous if failed (due to the x-ms-examples thing); then lets avoid reffing to ourselves
@@ -486,7 +509,16 @@ function findExternalRefs(options) {
                                     }
                                     // then spread the data out at the location of the pointer
                                     let cdata = clone(data);
-                                    jptr(options.openapi, finalPtr, cdata); // resolutionCase:F (cloned:yes)
+                                    jptr(
+                                      options.openapi,
+                                      finalPtr,
+
+                                      // if we're hositing, and the pointer changed (which means we want to hoist)
+                                      // check if we need to manipulate the data to fit in the component specified
+                                      options.hoistResolvedComponents && finalPtr !== ptr?
+                                        determineHoistedData(finalPtr, cdata) :
+                                        cdata
+                                    ); // resolutionCase:F (cloned:yes)
 
                                     // if we re-routed the destination of the data, update the ptr to point there
                                     if (finalPtr !== ptr) {
