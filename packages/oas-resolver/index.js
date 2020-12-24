@@ -20,7 +20,7 @@ const HOISTABLE_COMPONENT_SECTIONS = {
 }
 
 const COMPONENT_SECTION_HANDLER = {
-  'examples': data => { 'value': data }
+  'examples': data => ({ 'value': data })
 }
 
 const HOISTABLE_COMPONENT_SECTION_LOOKUP = Object.entries(HOISTABLE_COMPONENT_SECTIONS).reduce(
