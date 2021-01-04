@@ -35,3 +35,9 @@ Please try and keep commits related to a single package or piece of functionalit
 
 * [APIs.guru open-collective](https://opencollective.com/openapi-directory)
 * [Linode VPS referral link](https://www.linode.com/?r=5734be467cc501b23267cf66d451bc339042ddfa)
+
+## Release
+1. `npm config set registry <NEXUS_REGISTRY_PUSH_URL>`; ask the team if you need info
+2. `npm add-user`; login using the deployment user, ask the team if you need info
+3. Bump the `package.json` version for the packages you want to update
+4. `npm run rescue`; check the changes and approve
