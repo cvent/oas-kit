@@ -15,7 +15,8 @@ const isRef = require('reftools/lib/isref.js').isRef;
 const common = require('oas-kit-common');
 
 const HOISTABLE_COMPONENT_SECTIONS = {
-    'schemas': [ 'properties', 'items', 'schema', 'schemas' ]
+    'schemas': [ 'properties', 'items', 'schema', 'schemas' ],
+    'examples': [ 'examples' ]
 }
 
 const HOISTABLE_COMPONENT_SECTION_LOOKUP = Object.entries(HOISTABLE_COMPONENT_SECTIONS).reduce(
@@ -322,6 +323,7 @@ function buildComponentName(section, ref, openapi, idx = -1) {
     return existingJptr ? buildComponentName(section, ref, openapi, idx) : name;
 }
 
+
 function determineHoistedPtr(ptr, ref, openapi) {
 
     // check to see if this is a direct ref to a component; if so don't worry about hoisting
@@ -340,7 +342,7 @@ function determineHoistedPtr(ptr, ref, openapi) {
 
     const possibleSections = ptrParts
         .map(part => HOISTABLE_COMPONENT_SECTION_LOOKUP[part])
-        .filter(part => part !== null);
+        .filter(part => !!part);
 
     const possibleSection = possibleSections.length > 0 ?
         possibleSections[0] :
@@ -473,7 +475,9 @@ function findExternalRefs(options) {
                                 }
                                 // if we haven't resolved the ref; let's try to resolve it
                                 else {
-                                    const finalPtr = options.hoistResolvedComponents ? determineHoistedPtr(ptr, ref, options.openapi) : ptr;
+                                    const finalPtr = options.hoistResolvedComponents ?
+                                      determineHoistedPtr(ptr, ref, options.openapi) :
+                                      ptr;
 
                                     if (refs[ref].resolvedAt) {
                                         // if the previous if failed (due to the x-ms-examples thing); then lets avoid reffing to ourselves
