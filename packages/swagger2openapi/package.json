@@ -43,7 +43,7 @@
     "oas-schema-walker": "^1.1.5",
     "oas-validator": "^5.0.4",
     "reftools": "^1.1.7",
-    "yaml": "^1.10.0",
+    "yaml": "^2.2.2",
     "yargs": "^16.1.1"
   },
   "keywords": [
