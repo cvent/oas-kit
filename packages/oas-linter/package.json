@@ -18,7 +18,7 @@
   "dependencies": {
     "@exodus/schemasafe": "^1.0.0-rc.2",
     "should": "^13.2.1",
-    "yaml": "^1.10.0"
+    "yaml": "^2.2.2"
   },
   "repository": {
     "type": "git",
