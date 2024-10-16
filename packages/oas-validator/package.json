@@ -17,7 +17,7 @@
   "author": "Mike Ralphson",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "call-me-maybe": "^1.0.1",
+    "call-me-maybe": "^1.0.2",
     "oas-kit-common": "^1.0.8",
     "oas-linter": "^3.2.1",
     "oas-resolver": "^2.5.3",
