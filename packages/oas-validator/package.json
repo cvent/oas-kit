@@ -22,7 +22,7 @@
     "oas-linter": "^3.2.1",
     "oas-resolver": "^2.5.3",
     "oas-schema-walker": "^1.1.5",
-    "reftools": "^1.1.7",
+    "reftools": "^1.1.9",
     "should": "^13.2.1",
     "yaml": "^1.10.0"
   },
