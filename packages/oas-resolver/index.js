@@ -96,6 +96,16 @@ function getIfReference(enclosingObj, key, state) {
     }
 }
 
+/**
+ * Test if the given object is a discriminator type mapping with properties that are named refs, and if the
+ * given key is one of those properties within this object, and return the reference target and type (DISC_MAPPING),
+ * if it is, else return false.
+ *
+ * @param enclosingObj from scanExternalRefs.inner()
+ * @param key from scanExternalRefs.inner()
+ * @param state from scanExternalRefs.inner()
+ * @return {boolean|{ $ref: string, type: string }} False if not a ref, else an object with the ref and a type of RefType.DISC_MAPPING
+ */
 function getIfDiscrMappingReference(enclosingObj, key, state) {
     if (key.startsWith(X_MIRO_FOR_KEY_PREFIX)) {
         return false;

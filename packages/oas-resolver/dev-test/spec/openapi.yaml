@@ -1,0 +1,191 @@
+openapi: 3.0.0
+info:
+  title: Proposal Core Service API
+  description: Service to manage proposals
+  license:
+    name: CVENT
+    url: https://www.cvent.com
+  contact:
+    name: '#bi-notorious-devs'
+    url: 'https://wiki.cvent.com/x/pLUCIg'
+    email: NotoriousDevs@cvent.com
+  version: v1
+  x-cvent-product: CSN
+  x-cvent-manage-service-gateway: false
+  x-cvent-service: proposal-core-service
+
+tags:
+  - name: Proposal
+    description: Beta - All APIs are in Beta. Proposals contain event booking data and are responses to Request For Proposals's (RFP's). This API allows you to create and retrieve proposal data.
+  - name: Proposal Draft
+    description: Beta - All APIs are in Beta. Proposal Drafts are editable copies of proposals. This API allows you to edit proposal data privately before publishing.
+
+paths:
+  /proposal-drafts:
+    post:
+      summary: Beta - Create Proposal Draft
+      description: Creates a new proposal draft.
+      operationId: createProposalDraft
+      tags:
+        - Proposal Draft
+      x-cvent-visibility: public
+      x-cvent-hide-public-docs: false
+      security:
+        - bearer: []
+        - OAuth2.clientCredentials:
+            - proposal/proposals:write
+      x-cvent-security-roles:
+        - proposals:write
+      requestBody:
+        $ref: '#/components/requestBodies/ProposalRequest'
+      responses:
+        '201':
+          description: Successfully created a proposal draft.
+          headers:
+            location:
+              description: URL of proposal draft in edit mode.
+              example: 'https://proposals.app.t2.cvent.com/v1/supplier/proposals/d77306b1-04d5-46ac-ad89-f6d5f47e0c64/edit'
+              schema:
+                type: string
+                format: 'uri'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProposalResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+components:
+  parameters:
+    paginationLimit:
+      name: limit
+      in: query
+      description: The maximum number of records returned by API.
+      schema:
+        type: integer
+        maximum: 200
+        default: 200
+
+    proposalId:
+      in: path
+      name: proposalId
+      description: The ID of the proposal.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 'fe1c6cd4-a3e3-4b1d-a2f0-24c1e215a2d4'
+
+    sort:
+      name: sort
+      in: query
+      required: false
+      description: |
+        The sort order passed as a parameter, used to control the order of the results as a priority ordered
+        list of sorts. There are two options available to sort any field, i.e., ascending, descending.
+
+        Following fields are allowed to be sorted on:
+        * version (ASC|DESC)
+      schema:
+        type: string
+        example: 'version:ASC'
+
+    version:
+      in: path
+      name: version
+      description: The version number
+      required: true
+      schema:
+        type: integer
+        example: 2
+
+  schemas:
+
+    ProposalRequest:
+      $ref: './models/proposal-request.json'
+
+    ProposalResponse:
+      $ref: './models/proposal.json'
+
+    ValidationResponse:
+      $ref: './models/validation-response.json'
+
+  responses:
+    BadRequest:
+      $ref: './dependent-models/common-spec/components/responses.yaml#/BadRequest'
+
+    Email202Response:
+      description: 'Successfully sent the request(s) for processing.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProposalResponse'
+
+    Email409Response:
+      description: 'The request conflicts with current state of the target resource. The proposal must be in `SUBMITTED` status.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationResponse'
+
+    Forbidden:
+      $ref: './dependent-models/common-spec/components/responses.yaml#/Forbidden'
+
+    NotFound:
+      $ref: './dependent-models/common-spec/components/responses.yaml#/NotFound'
+
+    ProposalResponse:
+      description: 'A Proposal response.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProposalResponse'
+
+    TooManyRequests:
+      $ref: './dependent-models/common-spec/components/responses.yaml#/TooManyRequests'
+
+    Unauthorized:
+      $ref: './dependent-models/common-spec/components/responses.yaml#/Unauthorized'
+
+    ValidationResponse:
+      description: 'A validation response.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationResponse'
+
+  requestBodies:
+    ProposalRequest:
+      description: 'A Proposal request object to create a proposal'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProposalRequest'
+
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: bearer
+      description: 'prefix with the following "bearer "'
+    guestSessionId:
+      type: apiKey
+      in: header
+      name: cvent-guest-session-id
+      description: 'Guest Session ID'
+
+    OAuth2.clientCredentials:
+      type: oauth2
+      description: 'OAuth2 Client Credentials Flow'
+      flows:
+        clientCredentials:
+          tokenUrl: https://api-platform.cvent.com/auth/v1/oauth2/token
+          scopes:
+            proposal/proposals:read: Allows the reading of proposal
+            proposal/proposals:write: Allows the creation/writing of proposal
