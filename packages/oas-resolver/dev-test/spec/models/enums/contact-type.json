@@ -1,0 +1,10 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/contact-type.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "title": "ContactType",
+  "javaType": "com.cvent.api.models.proposalcore.enums.ContactType",
+  "description": "The contact types used for the proposal.",
+  "enum": ["PRIMARY", "SECONDARY"],
+  "default": "PRIMARY"
+}

@@ -1,0 +1,19 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/tax-type.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "title": "TaxType",
+  "description": "The tax type available for RFPs.",
+  "javaType": "com.cvent.api.models.proposalcore.enums.TaxType",
+  "enum": [
+    "INCLUSIVE",
+    "NONE",
+    "NO_TAX",
+    "SERVICE",
+    "SERVICE_INCLUSIVE",
+    "TAX",
+    "TAX_AND_SERVICE",
+    "TAX_AND_SERVICE_INCLUSIVE",
+    "TAX_INCLUSIVE"
+  ]
+}

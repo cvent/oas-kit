@@ -1,0 +1,9 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/fee-category.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "title": "FeeCategory",
+  "description": "Indicates the nature of the fee. `HST`, `GST`, `PST`, `VAT` are various sales taxes. `CITY`, `COUNTY`, `STATE`, `OCCUPANCY` are fees imposed by local governments.",
+  "javaType": "com.cvent.api.models.proposalcore.enums.FeeCategory",
+  "enum": ["HST", "CITY", "COUNTY", "GST", "NONE", "OCCUPANCY", "OTHER", "PST", "STATE", "VAT"]
+}

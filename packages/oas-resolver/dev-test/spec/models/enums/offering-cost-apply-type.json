@@ -1,0 +1,23 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/offering-cost-apply-type.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "title": "OfferingCostApplyType",
+  "description": "The offering's cost type indicating how the cost is structured.",
+  "javaType": "com.cvent.api.models.proposalcore.enums.OfferingCostApplyType",
+  "enum": [
+    "COMPLIMENTARY",
+    "INCLUDED_IN_PACKAGE",
+    "MINIMUM",
+    "NA",
+    "NONE",
+    "PER_DAY",
+    "PER_HOUR",
+    "PER_ITEM",
+    "PER_NET_SQ_FT",
+    "PER_NET_SQ_MTR",
+    "PER_PERSON",
+    "TOTAL",
+    "WAIVED"
+  ]
+}

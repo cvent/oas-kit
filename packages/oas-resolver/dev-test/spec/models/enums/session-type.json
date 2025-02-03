@@ -1,0 +1,9 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/session-type.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SessionType",
+  "description": "The session type.",
+  "type": "string",
+  "javaType": "com.cvent.api.models.proposalcore.enums.SessionType",
+  "enum": ["SPEAKER", "REMOTE"]
+}

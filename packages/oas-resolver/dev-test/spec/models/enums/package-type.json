@@ -1,0 +1,19 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/package-type.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "title": "PackageType",
+  "description": "Package type for the proposal.",
+  "javaType": "com.cvent.api.models.proposalcore.enums.PackageType",
+  "enum": [
+    "ALL_INCLUSIVE",
+    "COMPLETE_MEETING_PACKAGE",
+    "DAILY_DELEGATE_RATE",
+    "DAY_MEETING_PACKAGE",
+    "HALF_DDR",
+    "HALF_DMP",
+    "MODIFIED_MEETING_PACKAGE",
+    "SLEEPING_ROOM_RATE",
+    "TWENTYFOUR_HOUR_RATE"
+  ]
+}
