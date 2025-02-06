@@ -1,0 +1,15 @@
+{
+  "$id": "https://cvent.com/api/csn/proposal-core-service/proposal-request.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Schema for proposal request.",
+  "type": "object",
+  "title": "ProposalRequest",
+  "extends": {
+    "$ref": "base-proposal.json"
+  },
+  "allOf": [
+    {
+      "$ref": "base-proposal.json"
+    }
+  ]
+}

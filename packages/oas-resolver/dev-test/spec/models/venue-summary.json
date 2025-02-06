@@ -1,0 +1,23 @@
+{
+  "$id": "https://cvent.com/api/csn/proposal-core-service/venue-summary.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Represents a summary of venue information associated with current proposal.",
+  "type": "object",
+  "title": "VenueSummary",
+  "allOf": [{ "$ref": "supplier.json" }],
+  "extends": {
+    "$ref": "supplier.json"
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique ID of the venue.",
+      "example": "bedc1f8e-f68b-40cf-b901-487e407f637a"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the venue.",
+      "example": "Hotel Grand San Francisco."
+    }
+  }
+}

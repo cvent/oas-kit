@@ -1,0 +1,9 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/fee-type.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "title": "FeeType",
+  "description": "The fee type.",
+  "javaType": "com.cvent.api.models.proposalcore.enums.FeeType",
+  "enum": ["FEE", "TAX"]
+}

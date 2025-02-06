@@ -1,0 +1,32 @@
+{
+  "$id": "https://cvent.com/api/csn/proposal-core-service/base-proposal.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Schema for proposal request.",
+  "type": "object",
+  "title": "BaseProposal",
+  "extends": {
+    "$ref": "../dependent-models/common-spec/models/audit.json"
+  },
+  "allOf": [
+    {
+      "$ref": "../dependent-models/common-spec/models/audit.json"
+    }
+  ],
+  "properties": {
+    "scpTemplateId": {
+      "format": "uuid",
+      "type": "string",
+      "example": "a633b01c-e461-4cc2-8c66-8ae036115658",
+      "description": "The ID of the smart custom proposal template."
+    },
+    "type": {
+      "$ref": "enums/proposal-type.json"
+    },
+    "supplierSummary": {
+      "$ref": "supplier-summary.json"
+    },
+    "newSupplierSummary": {
+      "$ref": "supplier-summary.json"
+    }
+  }
+}

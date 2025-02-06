@@ -9,3 +9,6 @@ packages/oas-validator/schemas/henry*
 packages/oas-repair/*
 test/oas-repair*
 .project
+
+**/dependent-models/
+.idea

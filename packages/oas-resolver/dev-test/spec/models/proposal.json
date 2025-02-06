@@ -1,0 +1,47 @@
+{
+  "$id": "https://cvent.com/api/csn/proposal-core-service/proposal.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Schema for proposal.",
+  "type": "object",
+  "title": "Proposal",
+  "extends": {
+    "$ref": "base-proposal.json"
+  },
+  "allOf": [
+    {
+      "$ref": "base-proposal.json"
+    }
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The unique ID of the proposal.",
+      "example": "cf5fd2cc-3d09-11ee-be56-0242ac120002"
+    },
+    "proposalCode": {
+      "type": "string",
+      "minLength": 14,
+      "maxLength": 14,
+      "description": "A 14-character human readable proposal code.",
+      "example": "P230810-G7T9DR"
+    },
+    "version": {
+      "type": "integer",
+      "description": "The version number associated with the proposal.",
+      "example": 1
+    },
+    "lastSubmittedTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The ISO 8601 zoned Coordinated Universal Time (UTC) when the proposal was last submitted.",
+      "example": "2023-02-12T03:00:00Z"
+    },
+    "responseDetails": {
+      "type": "string",
+      "description": "Additional details provided while responding to the proposal.",
+      "example": "The location is far from the event venue."
+    }
+  },
+  "required": ["id", "proposalCode", "version"]
+}

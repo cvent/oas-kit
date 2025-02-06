@@ -1,0 +1,9 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/validation-status.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "title": "ValidationStatus",
+  "javaType": "com.cvent.api.models.proposalcore.enums.ValidationStatus",
+  "description": "The validation status.",
+  "enum": ["VALID", "INVALID"]
+}

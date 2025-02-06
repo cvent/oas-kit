@@ -1,0 +1,640 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Proposal Core Service API",
+    "description": "Service to manage proposals",
+    "license": {
+      "name": "CVENT",
+      "url": "https://www.cvent.com"
+    },
+    "contact": {
+      "name": "#bi-notorious-devs",
+      "url": "https://wiki.cvent.com/x/pLUCIg",
+      "email": "NotoriousDevs@cvent.com"
+    },
+    "version": "v1",
+    "x-cvent-product": "CSN",
+    "x-cvent-manage-service-gateway": false,
+    "x-cvent-service": "proposal-core-service"
+  },
+  "tags": [
+    {
+      "name": "Proposal",
+      "description": "Beta - All APIs are in Beta. Proposals contain event booking data and are responses to Request For Proposals's (RFP's). This API allows you to create and retrieve proposal data."
+    },
+    {
+      "name": "Proposal Draft",
+      "description": "Beta - All APIs are in Beta. Proposal Drafts are editable copies of proposals. This API allows you to edit proposal data privately before publishing."
+    }
+  ],
+  "paths": {
+    "/proposal-drafts": {
+      "post": {
+        "summary": "Beta - Create Proposal Draft",
+        "description": "Creates a new proposal draft.",
+        "operationId": "createProposalDraft",
+        "tags": [
+          "Proposal Draft"
+        ],
+        "x-cvent-visibility": "public",
+        "x-cvent-hide-public-docs": false,
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "OAuth2.clientCredentials": [
+              "proposal/proposals:write"
+            ]
+          }
+        ],
+        "x-cvent-security-roles": [
+          "proposals:write"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ProposalRequest"
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created a proposal draft.",
+            "headers": {
+              "location": {
+                "description": "URL of proposal draft in edit mode.",
+                "example": "https://proposals.app.t2.cvent.com/v1/supplier/proposals/d77306b1-04d5-46ac-ad89-f6d5f47e0c64/edit",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProposalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "paginationLimit": {
+        "name": "limit",
+        "in": "query",
+        "description": "The maximum number of records returned by API.",
+        "schema": {
+          "type": "integer",
+          "maximum": 200,
+          "default": 200
+        }
+      },
+      "proposalId": {
+        "in": "path",
+        "name": "proposalId",
+        "description": "The ID of the proposal.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "fe1c6cd4-a3e3-4b1d-a2f0-24c1e215a2d4"
+        }
+      },
+      "sort": {
+        "name": "sort",
+        "in": "query",
+        "required": false,
+        "description": "The sort order passed as a parameter, used to control the order of the results as a priority ordered\nlist of sorts. There are two options available to sort any field, i.e., ascending, descending.\n\nFollowing fields are allowed to be sorted on:\n* version (ASC|DESC)\n",
+        "schema": {
+          "type": "string",
+          "example": "version:ASC"
+        }
+      },
+      "version": {
+        "in": "path",
+        "name": "version",
+        "description": "The version number",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "example": 2
+        }
+      }
+    },
+    "schemas": {
+      "ProposalRequest": {
+        "$id": "https://cvent.com/api/csn/proposal-core-service/proposal-request.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "description": "Schema for proposal request.",
+        "type": "object",
+        "title": "ProposalRequest",
+        "extends": {
+          "$ref": "#/components/schemas/base-proposal.json"
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base-proposal.json"
+          }
+        ]
+      },
+      "ProposalResponse": {
+        "$id": "https://cvent.com/api/csn/proposal-core-service/proposal.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "description": "Schema for proposal.",
+        "type": "object",
+        "title": "Proposal",
+        "extends": {
+          "$ref": "#/components/schemas/base-proposal.json"
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base-proposal.json"
+          }
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique ID of the proposal.",
+            "example": "cf5fd2cc-3d09-11ee-be56-0242ac120002"
+          },
+          "proposalCode": {
+            "type": "string",
+            "minLength": 14,
+            "maxLength": 14,
+            "description": "A 14-character human readable proposal code.",
+            "example": "P230810-G7T9DR"
+          },
+          "version": {
+            "type": "integer",
+            "description": "The version number associated with the proposal.",
+            "example": 1
+          },
+          "lastSubmittedTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The ISO 8601 zoned Coordinated Universal Time (UTC) when the proposal was last submitted.",
+            "example": "2023-02-12T03:00:00Z"
+          },
+          "responseDetails": {
+            "type": "string",
+            "description": "Additional details provided while responding to the proposal.",
+            "example": "The location is far from the event venue."
+          }
+        },
+        "required": [
+          "id",
+          "proposalCode",
+          "version"
+        ]
+      },
+      "ValidationResponse": {
+        "$id": "https://cvent.com/api/csn/proposal-core-service/validation-response.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "description": "Schema for Validation Response.",
+        "type": "object",
+        "title": "ValidationResponse",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The unique transaction ID of the validation process in format TID-{proposalId}::{uuid}.",
+            "example": "TID-501a69e8-8a07-464d-ba90-4f131186b889::cb2a2326-095e-4db1-8605-cdb7a9ec9fac"
+          },
+          "failFast": {
+            "type": "boolean",
+            "readOnly": true,
+            "default": true,
+            "description": "True indicates validations are performed in a fail-fast manner, and will stop the validation process at the first set of errors."
+          },
+          "validated": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "The ISO 8601 formatted date time (in UTC) when this validation was executed.",
+            "example": "2023-11-14T14:59:33.463Z"
+          },
+          "status": {
+            "$ref": "#/components/schemas/validation-status.json"
+          },
+          "errorDetails": {
+            "type": "array",
+            "description": "The list of error response objects.",
+            "items": {
+              "$ref": "#/components/schemas/error-detail.json"
+            }
+          }
+        },
+        "required": [
+          "transactionId",
+          "status",
+          "validated",
+          "failFast"
+        ]
+      },
+      "base-proposal.json": {
+        "$id": "https://cvent.com/api/csn/proposal-core-service/base-proposal.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "description": "Schema for proposal request.",
+        "type": "object",
+        "title": "BaseProposal",
+        "extends": {
+          "$ref": "#/components/schemas/audit.json"
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/audit.json"
+          }
+        ],
+        "properties": {
+          "scpTemplateId": {
+            "format": "uuid",
+            "type": "string",
+            "example": "a633b01c-e461-4cc2-8c66-8ae036115658",
+            "description": "The ID of the smart custom proposal template."
+          },
+          "type": {
+            "$ref": "#/components/schemas/proposal-type.json"
+          },
+          "supplierSummary": {
+            "$ref": "#/components/schemas/supplier-summary.json"
+          },
+          "newSupplierSummary": {
+            "$ref": "#/components/schemas/supplier-summary.json"
+          }
+        }
+      },
+      "validation-status.json": {
+        "$id": "https://cvent.com/api/proposal-core-service/validation-status.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "string",
+        "title": "ValidationStatus",
+        "javaType": "com.cvent.api.models.proposalcore.enums.ValidationStatus",
+        "description": "The validation status.",
+        "enum": [
+          "VALID",
+          "INVALID"
+        ]
+      },
+      "error-detail.json": {
+        "$id": "https://cvent.com/api/csn/proposal-core-service/error-details.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "ErrorDetail",
+        "type": "object",
+        "description": "Represents an error response object.",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "A short error code.",
+            "example": "validationError"
+          },
+          "message": {
+            "type": "string",
+            "description": "A brief description of the error.",
+            "example": "Bad Request"
+          },
+          "target": {
+            "type": "string",
+            "description": "The target resource of the error.",
+            "example": "proposalDate[0].startDate"
+          }
+        }
+      },
+      "error-response.json": {
+        "$id": "https://cvent.com/api/common/error-response.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "ErrorResponse",
+        "description": "Represents an error response with additional details of cascading error messages.",
+        "allOf": [
+          {
+            "$id": "https://cvent.com/api/common/error-response-base.json",
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "title": "ErrorResponseBase",
+            "type": "object",
+            "description": "Represents an error response with no additional details.",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "integer",
+                "description": "The HTTP status code representing the error.",
+                "example": 400
+              },
+              "message": {
+                "type": "string",
+                "description": "A brief description of the error.",
+                "example": "Bad Request"
+              },
+              "target": {
+                "type": "string",
+                "description": "The target resource of the error.",
+                "example": "example target"
+              }
+            }
+          }
+        ],
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/error-response.json/allOf/0"
+            },
+            "description": "Additional details of cascading error messages."
+          }
+        }
+      },
+      "audit.json": {
+        "$id": "https://cvent.com/api/common/audit.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Audit",
+        "description": "Audit information",
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The ISO 8601 zoned date time when this record was created.",
+            "readOnly": true,
+            "example": "2017-01-02T02:00:00Z"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The identifier of the user that created this record.",
+            "readOnly": true,
+            "example": "hporter"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The ISO 8601 zoned date time when this record was updated.",
+            "readOnly": true,
+            "example": "2019-02-12T03:00:00Z"
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "description": "The identifier of the user that last updated this record.",
+            "readOnly": true,
+            "example": "hporter"
+          }
+        }
+      },
+      "proposal-type.json": {
+        "$id": "https://cvent.com/api/proposal-core-service/proposal-type.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "string",
+        "title": "ProposalType",
+        "javaType": "com.cvent.api.models.proposalcore.enums.ProposalType",
+        "description": "The type of the proposal.",
+        "enum": [
+          "VENUE"
+        ],
+        "default": "VENUE"
+      },
+      "supplier-summary.json": {
+        "$id": "https://cvent.com/api/csn/proposal-core-service/supplier-summary.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "description": "Represents a summary of supplier information associated with current proposal.",
+        "type": "object",
+        "title": "SupplierSummary",
+        "properties": {
+          "supplier": {
+            "description": "The supplier associated with current proposal.",
+            "oneOf": [
+              {
+                "$id": "https://cvent.com/api/csn/proposal-core-service/venue-summary.json",
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "description": "Represents a summary of venue information associated with current proposal.",
+                "type": "object",
+                "title": "VenueSummary",
+                "allOf": [
+                  {
+                    "$id": "https://cvent.com/api/csn/proposal-core-service/supplier.json",
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "description": "Represents a supplier object.",
+                    "type": "object",
+                    "javaType": "com.cvent.api.models.proposalcore.Supplier",
+                    "title": "Supplier",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/supplier-type.json"
+                      }
+                    }
+                  }
+                ],
+                "extends": {
+                  "$ref": "#/components/schemas/supplier-summary.json/properties/supplier/oneOf/0/allOf/0"
+                },
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The unique ID of the venue.",
+                    "example": "bedc1f8e-f68b-40cf-b901-487e407f637a"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the venue.",
+                    "example": "Hotel Grand San Francisco."
+                  }
+                }
+              }
+            ],
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "VENUE": "venue-summary.json"
+              }
+            }
+          }
+        }
+      },
+      "supplier-type.json": {
+        "$id": "https://cvent.com/api/proposal-core-service/supplier-type.json",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "SupplierType",
+        "description": "The supplier's type. VENUE: A hotel, convention and visitors bureau (CVB), or other location for an event.",
+        "type": "string",
+        "javaType": "com.cvent.api.models.proposalcore.enums.SupplierType",
+        "enum": [
+          "VENUE"
+        ],
+        "default": "VENUE"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-response.json"
+            },
+            "example": {
+              "code": 400,
+              "message": "Bad Request"
+            }
+          }
+        }
+      },
+      "Email202Response": {
+        "description": "Successfully sent the request(s) for processing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProposalResponse"
+            }
+          }
+        }
+      },
+      "Email409Response": {
+        "description": "The request conflicts with current state of the target resource. The proposal must be in `SUBMITTED` status.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ValidationResponse"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "You do not have access to the resource",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-response.json"
+            },
+            "example": {
+              "code": 403,
+              "message": "Access Forbidden"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-response.json"
+            },
+            "example": {
+              "code": 404,
+              "message": "Not found"
+            }
+          }
+        }
+      },
+      "ProposalResponse": {
+        "description": "A Proposal response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProposalResponse"
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Too many requests",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-response.json"
+            },
+            "example": {
+              "code": 429,
+              "message": "Limit Exceeded"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Bad or expired token",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-response.json"
+            },
+            "example": {
+              "code": 401,
+              "message": "Unauthorized"
+            }
+          }
+        }
+      },
+      "ValidationResponse": {
+        "description": "A validation response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ValidationResponse"
+            }
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "ProposalRequest": {
+        "description": "A Proposal request object to create a proposal",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProposalRequest"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "bearer",
+        "description": "prefix with the following \"bearer \""
+      },
+      "guestSessionId": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "cvent-guest-session-id",
+        "description": "Guest Session ID"
+      },
+      "OAuth2.clientCredentials": {
+        "type": "oauth2",
+        "description": "OAuth2 Client Credentials Flow",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://api-platform.cvent.com/auth/v1/oauth2/token",
+            "scopes": {
+              "proposal/proposals:read": "Allows the reading of proposal",
+              "proposal/proposals:write": "Allows the creation/writing of proposal"
+            }
+          }
+        }
+      }
+    }
+  }
+}

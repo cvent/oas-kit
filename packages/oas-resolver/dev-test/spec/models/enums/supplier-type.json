@@ -1,0 +1,10 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/supplier-type.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SupplierType",
+  "description": "The supplier's type. VENUE: A hotel, convention and visitors bureau (CVB), or other location for an event.",
+  "type": "string",
+  "javaType": "com.cvent.api.models.proposalcore.enums.SupplierType",
+  "enum": ["VENUE"],
+  "default": "VENUE"
+}

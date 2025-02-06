@@ -1,0 +1,9 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/enums/proposal-date-availability.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "title": "ProposalDateAvailability",
+  "description": "The availability of the venue over the requested dates.",
+  "javaType": "com.cvent.api.models.proposalcore.enums.ProposalDateAvailability",
+  "enum": ["AVAILABLE_FIRST_OPTION", "AVAILABLE_SECOND_OPTION", "AVAILABLE_WITH_LIMITATIONS", "NONE", "NOT_AVAILABLE"]
+}

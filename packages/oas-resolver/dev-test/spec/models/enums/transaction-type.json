@@ -1,0 +1,27 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/transaction-type.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TransactionType",
+  "description": "The proposal transaction type",
+  "type": "string",
+  "javaType": "com.cvent.api.models.proposalcore.enums.TransactionType",
+  "enum": [
+    "AWARD",
+    "CANCEL",
+    "COPY",
+    "CREATE",
+    "DECLINE",
+    "DELETE",
+    "EXPIRE",
+    "MODIFY",
+    "OBFUSCATE",
+    "PUBLISH",
+    "PUBLISH_CANCEL",
+    "PUBLISH_REQUEST",
+    "REOPEN",
+    "RESEND_EMAIL",
+    "SUBMIT",
+    "VALIDATE",
+    "WITHDRAW"
+  ]
+}

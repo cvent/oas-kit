@@ -1,0 +1,39 @@
+{
+  "$id": "https://cvent.com/api/csn/proposal-core-service/validation-response.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Schema for Validation Response.",
+  "type": "object",
+  "title": "ValidationResponse",
+  "properties": {
+    "transactionId": {
+      "type": "string",
+      "readOnly": true,
+      "description": "The unique transaction ID of the validation process in format TID-{proposalId}::{uuid}.",
+      "example": "TID-501a69e8-8a07-464d-ba90-4f131186b889::cb2a2326-095e-4db1-8605-cdb7a9ec9fac"
+    },
+    "failFast": {
+      "type": "boolean",
+      "readOnly": true,
+      "default": true,
+      "description": "True indicates validations are performed in a fail-fast manner, and will stop the validation process at the first set of errors."
+    },
+    "validated": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true,
+      "description": "The ISO 8601 formatted date time (in UTC) when this validation was executed.",
+      "example": "2023-11-14T14:59:33.463Z"
+    },
+    "status": {
+      "$ref": "enums/validation-status.json"
+    },
+    "errorDetails": {
+      "type": "array",
+      "description": "The list of error response objects.",
+      "items": {
+        "$ref": "error-detail.json"
+      }
+    }
+  },
+  "required": ["transactionId", "status", "validated", "failFast"]
+}

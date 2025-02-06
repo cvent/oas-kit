@@ -1,0 +1,10 @@
+{
+  "$id": "https://cvent.com/api/proposal-core-service/proposal-status.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "title": "ProposalStatus",
+  "javaType": "com.cvent.api.models.proposalcore.enums.ProposalStatus",
+  "description": "The status of the proposal. See [definitions of proposal statuses](https://support.cvent.com/s/communityarticle/Understanding-RFP-and-Proposal-Statuses)",
+  "enum": ["NOT_SENT", "SUBMITTED", "AWARDED", "DECLINED", "DELETED", "NO_RESPONSE", "CANCELLED", "WITHDRAWN"],
+  "default": "NOT_SENT"
+}

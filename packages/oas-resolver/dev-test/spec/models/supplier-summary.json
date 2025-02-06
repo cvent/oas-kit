@@ -1,0 +1,23 @@
+{
+  "$id": "https://cvent.com/api/csn/proposal-core-service/supplier-summary.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Represents a summary of supplier information associated with current proposal.",
+  "type": "object",
+  "title": "SupplierSummary",
+  "properties": {
+    "supplier": {
+      "description": "The supplier associated with current proposal.",
+      "oneOf": [
+        {
+          "$ref": "venue-summary.json"
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type",
+        "mapping": {
+          "VENUE": "venue-summary.json"
+        }
+      }
+    }
+  }
+}
