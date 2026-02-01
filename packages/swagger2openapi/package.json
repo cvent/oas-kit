@@ -37,7 +37,7 @@
     "call-me-maybe": "^1.0.1",
     "node-fetch": "^2.6.1",
     "node-fetch-h2": "^2.3.0",
-    "node-readfiles": "^0.2.0",
+    "node-readfiles": "^0.4.0",
     "oas-kit-common": "^1.0.8",
     "oas-resolver": "^2.5.3",
     "oas-schema-walker": "^1.1.5",
